@@ -5,19 +5,26 @@ import sys
 def build_yaml_entry(row):
     entry = {
         "name": row.get("Prénom_Nom", "").strip(),
-        "url": row.get("url", "").strip(),
         "lab": " ".join(filter(None, [
             row.get("Laboratoire", "").strip(),
             row.get("Tutelle1", "").strip(),
             row.get("Tutelle2", "").strip()
         ])),
-        "city": row.get("Ville", "").strip(),
-        "image": row.get("image", "").strip()
+        "city": row.get("Ville", "").strip()
     }
 
-    # Ajout des champs booléens uniquement s'ils sont non vides ou "true"
+    # Ajout conditionnel des champs si non vides
+    url = row.get("url", "").strip()
+    if url:
+        entry["url"] = url
+
+    image = row.get("image", "").strip()
+    if image:
+        entry["image"] = image
+
     if row.get("Coord", "").strip().lower() == "true":
         entry["coord"] = True
+
     if row.get("Copil", "").strip().lower() == "true":
         entry["steering"] = True
 
